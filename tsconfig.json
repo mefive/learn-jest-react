@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "moduleResolution": "node",
+    "allowJs": true,
+    "noEmit": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "useDefineForClassFields": true,
+    "jsx": "react",
+    "lib": ["ES2020", "DOM"],
+    "baseUrl": ".",
+  },
+  "include": ["./src", "*.js"]
+}
