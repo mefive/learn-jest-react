@@ -2,11 +2,14 @@ import { Button } from "antd";
 import "antd/dist/antd.css";
 import classNames from "classnames";
 import React, { useState } from "react";
-import style from "./app.module.css";
+import Products from "../products";
 import "./app.css";
+import style from "./app.module.css";
 
 function App() {
     const [counter, setCounter] = useState(1);
+    const [showProducts, setShowProducts] = useState(false);
+
     return (
         <div
             id="container"
@@ -17,15 +20,22 @@ function App() {
         >
             <div className="flex justify-center gap-1 p-4">
                 <Button
-                    type="primary"
+                    danger
                     onClick={() => {
                         setCounter(counter + 1);
                     }}
                 >
                     Add
                 </Button>
-                <p>{counter}</p>
+
+                <Button onClick={() => setShowProducts(!showProducts)}>
+                    Toggle
+                </Button>
             </div>
+
+            <p>{counter}</p>
+
+            {showProducts && <Products />}
         </div>
     );
 }

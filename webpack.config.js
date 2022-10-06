@@ -7,7 +7,6 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
  * @type {import('webpack').Configuration}
  */
 module.exports = {
-    mode: "production",
     entry: {
         index: "./src/index",
     },
@@ -35,9 +34,9 @@ module.exports = {
                         options: {
                             modules: {
                                 auto: /\.module/,
-                                mode: 'local',
-                                localIdentName: '[name]-[hash:7]'
-                            }
+                                mode: "local",
+                                localIdentName: "[name]-[hash:7]",
+                            },
                         },
                     },
                     "postcss-loader",
@@ -53,6 +52,9 @@ module.exports = {
             overlay: {
                 warnings: false,
             },
+        },
+        proxy: {
+            "/api": "http://localhost:3000",
         },
     },
     performance: {

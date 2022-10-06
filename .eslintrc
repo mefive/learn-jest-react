@@ -11,7 +11,7 @@
     },
     "overrides": [
         {
-            "files": ["**/*.spec.js", "**/*.spec.jsx"],
+            "files": ["**/*.spec.js", "**/*.spec.jsx", "jest.setup.js"],
             "env": {
                 "jest": true
             }
