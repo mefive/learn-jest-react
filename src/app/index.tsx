@@ -1,8 +1,8 @@
+import Products from "@components/products";
 import { Button } from "antd";
 import "antd/dist/antd.css";
 import classNames from "classnames";
 import React, { useState } from "react";
-import Products from "../products";
 import "./app.css";
 import style from "./app.module.css";
 

@@ -5,6 +5,7 @@ const config = {
     verbose: true,
     moduleNameMapper: {
         "\\.(css|less)$": "identity-obj-proxy",
+        "@components/(.*)": "<rootDir>/src/components/$1",
     },
 };
 

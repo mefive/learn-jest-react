@@ -24,10 +24,12 @@ export default class ProductsStore {
     }
 
     async fetchProducts() {
-        // const res = await axios.get<{ products: Product[]}>("/api/products");
-        // runInAction(() => {
-        //     this.products = res.data.products;
-        // });
+        const projects = (await fetch("/api/products").then((res) =>
+            res.json()
+        )) as Product[];
+        runInAction(() => {
+            this.products = projects;
+        });
     }
 
     async fetchGreeting() {
