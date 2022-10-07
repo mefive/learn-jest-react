@@ -3,25 +3,59 @@
  */
 import Products from "@components/products";
 import "@testing-library/jest-dom";
-import { render, screen } from "@testing-library/react";
-import { rest } from "msw";
+import { act, fireEvent, render, screen } from "@testing-library/react";
+import { makeObservable, observable, runInAction } from "mobx";
+import { MobXProviderContext } from "mobx-react";
 import React from "react";
-import server from "../../../mocks/server";
 
-test("加载后发起请求", async () => {
-    server.use(
-        rest.get("/api/products", (req, res, ctx) => {
-            return res(
-                ctx.json([
-                    {
-                        name: "iPhone SE 3",
-                        weight: 143,
-                        price: 3499,
-                    },
-                ])
-            );
-        })
+class MockProductStore {
+    products = [];
+
+    constructor() {
+        makeObservable(this, {
+            products: observable,
+        });
+    }
+
+    fetchProducts = jest.fn().mockImplementation(async () => {
+        runInAction(() => {
+            this.products = [
+                {
+                    name: "iPhone 14 Plus",
+                    price: 6999,
+                    weight: 202,
+                },
+            ];
+        });
+        return null;
+    });
+}
+
+const productStore = new MockProductStore();
+
+beforeEach(async () => {
+    await act(async () =>
+      render(
+        <MobXProviderContext.Provider value={{ productStore }}>
+            <Products />
+        </MobXProviderContext.Provider>
+      )
     );
-    render(<Products />);
-    await screen.findByText("143");
+});
+
+afterEach(() => {
+    jest.clearAllMocks();
+});
+
+describe("商品页主流程", () => {
+    it("加载页面后主动发起获取商品列表的请求", async () => {
+        expect(productStore.fetchProducts).toHaveBeenCalled();
+    });
+    test("点击按钮刷新列表", async () => {
+        jest.clearAllMocks();
+        await act(async () => {
+            fireEvent.click(await screen.findByText("刷新"));
+        });
+        expect(productStore.fetchProducts).toHaveBeenCalled();
+    });
 });

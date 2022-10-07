@@ -13,16 +13,6 @@ export default class ProductsStore {
         });
     }
 
-    static instance: ProductsStore;
-
-    static getInstance() {
-        if (this.instance == null) {
-            this.instance = new ProductsStore();
-        }
-
-        return this.instance;
-    }
-
     async fetchProducts() {
         const projects = (await fetch("/api/products").then((res) =>
             res.json()

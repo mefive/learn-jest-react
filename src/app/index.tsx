@@ -1,7 +1,9 @@
 import Products from "@components/products";
+import ProductsStore from "@components/products/ProductStore";
 import { Button } from "antd";
 import "antd/dist/antd.css";
 import classNames from "classnames";
+import { MobXProviderContext } from "mobx-react";
 import React, { useState } from "react";
 import "./app.css";
 import style from "./app.module.css";
@@ -35,7 +37,13 @@ function App() {
 
             <p>{counter}</p>
 
-            {showProducts && <Products />}
+            {showProducts && (
+                <MobXProviderContext.Provider
+                    value={{ productStore: new ProductsStore() }}
+                >
+                    <Products />
+                </MobXProviderContext.Provider>
+            )}
         </div>
     );
 }

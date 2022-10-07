@@ -1,13 +1,16 @@
+import ProductsStore from "@components/products/ProductStore";
 import { useRequest } from "ahooks";
+import { Button } from "antd";
 import classNames from "classnames";
-import { observer } from "mobx-react";
-import React, { useMemo } from "react";
-import ProductsStore from "./ProductStore";
+import { MobXProviderContext, observer } from "mobx-react";
+import React, { useContext } from "react";
 
 function Products() {
-    const productStore = useMemo(() => ProductsStore.getInstance(), []);
+    const { productStore } = useContext(MobXProviderContext) as {
+        productStore: ProductsStore;
+    };
 
-    const { loading } = useRequest(productStore.fetchProducts);
+    const { loading, run } = useRequest(productStore.fetchProducts);
 
     return (
         <div
@@ -29,6 +32,12 @@ function Products() {
                     ))}
                 </div>
             )}
+
+            <div className="mt-3 flex justify-center">
+                <Button type="link" onClick={run}>
+                    刷新
+                </Button>
+            </div>
         </div>
     );
 }
