@@ -4,42 +4,21 @@
 import Products from "@components/products";
 import "@testing-library/jest-dom";
 import { act, fireEvent, render, screen } from "@testing-library/react";
-import { makeObservable, observable, runInAction } from "mobx";
 import { MobXProviderContext } from "mobx-react";
 import React from "react";
+import ProductStore from "./ProductStore";
 
-class MockProductStore {
-    products = [];
+jest.mock("@components/products/ProductStore");
 
-    constructor() {
-        makeObservable(this, {
-            products: observable,
-        });
-    }
-
-    fetchProducts = jest.fn().mockImplementation(async () => {
-        runInAction(() => {
-            this.products = [
-                {
-                    name: "iPhone 14 Plus",
-                    price: 6999,
-                    weight: 202,
-                },
-            ];
-        });
-        return null;
-    });
-}
-
-const productStore = new MockProductStore();
+const productStore = new ProductStore();
 
 beforeEach(async () => {
     await act(async () =>
-      render(
-        <MobXProviderContext.Provider value={{ productStore }}>
-            <Products />
-        </MobXProviderContext.Provider>
-      )
+        render(
+            <MobXProviderContext.Provider value={{ productStore }}>
+                <Products />
+            </MobXProviderContext.Provider>
+        )
     );
 });
 
@@ -50,6 +29,7 @@ afterEach(() => {
 describe("商品页主流程", () => {
     it("加载页面后主动发起获取商品列表的请求", async () => {
         expect(productStore.fetchProducts).toHaveBeenCalled();
+        await screen.findByText("202");
     });
     test("点击按钮刷新列表", async () => {
         jest.clearAllMocks();
